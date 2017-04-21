@@ -18,6 +18,7 @@ All rights reserved.
 #  }
 #
 
+# On temperature callback
 
 class TemperaturesCallback(Callback):
     name = 'temperatures'
@@ -26,11 +27,42 @@ class TemperaturesCallback(Callback):
 
     def functionality(self):
 
-        temperature = getattr(self.event.value, 'output', None)
+        # look for temperature value
+        channel = 'channel_{}'.format(self.module.settings.t_control_tc08_chan)
 
-        try:
-            self.module.enable_output(output_1=(output == 1), output_2=(output == 2))
-            self.module.pub_status(output)
-        except:
-            log.exception('Exception on enable output callback')
+        chan_values = getattr(self.event.value, channel, None)
+        if chan_values is None:
+            log.error("Received event temperatures without info of channel {}: {}".format(channel,
+                                                                                          self.event.value))
+            return
+        temperature = getattr(chan_values, 'value', None)
+        if temperature is None:
+            log.error("Received event temperatures without value of temperature value: {}".format(self.event.value))
+            return
 
+        self.module.bc.temperature = temperature
+        self.module.sm.update()
+
+
+class ThermoCoolerCallback(Callback):
+    name = 'voltage_current'
+    description = "Receive VI calculated values for thermo cooler"
+    version = "0.1"
+
+    def functionality(self):
+
+        # look for temperature value
+        channel = 'channel_{}'.format(self.module.settings.t_control_tc08_chan)
+
+        chan_values = getattr(self.event.value, channel, None)
+        if chan_values is None:
+            log.error("Received event temperatures without info of channel {}: {}".format(channel,
+                                                                                          self.event.value))
+            return
+        temperature = getattr(chan_values, 'value', None)
+        if temperature is None:
+            log.error("Received event temperatures without value of temperature value: {}".format(self.event.value))
+            return
+
+        self.module.bc.temperature = temperature
+        self.module.sm.update()

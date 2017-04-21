@@ -6,9 +6,10 @@ from entropyfw.common import get_utc_ts
 from .state_machine import StateMachine, StateRequests
 
 from .actions import StartTempLoop, EnableChannel, StopTempLoop
-from .web.api.resources import get_api_resources
-from .web.blueprints import get_blueprint
+# from .web.api.resources import get_api_resources
+# from .web.blueprints import get_blueprint
 from gfa_thermal.system_names import *
+from gfa_thermal import config
 """
 module
 Created by otger on 23/03/17.
@@ -37,6 +38,17 @@ class EntropyController(Module):
     def set_thresholds(self, t_cold, t_hot):
         self.settings.cold_threshold = t_cold
         self.settings.hot_threshold = t_hot
+        self.sm.update()
+
+    def set_channels(self, control_temp, thermo_cooler_cold, thermo_cooler_hot):
+        """
+        This method sets which TC08 channels have to be used for each one of the temperatures
+        :param control_temp: TC08 channel of temperature to be used as control
+        :param thermo_cooler_cold: TC08 channel of the thermocouple placed at cold side of thermo cooler
+        :param thermo_cooler_hot: TC08 channel of the thermocouple placed at hot side of thermo cooler
+        :return:
+        """
+
 
 
 class Functionality(object):
@@ -70,6 +82,13 @@ class Functionality(object):
 
     def publish_status(self):
         status = {'state': self.p.sm.current_state.name,
+                  'ps_output': self.p.settings.ps_output,
+                  'tc_08_channel': self.p.settings.tc08_channel,
+                  'cold_threshold': self.p.settings.cold_threshold,
+                  'hot_threshold': self.p.settings.hot_threshold,
+                  'temperature': self.p.bc.temperature,
+                  'voltage': self.p.bc.voltage,
+                  'current_limit': self.p.bc.current
                   }
 
 
@@ -83,7 +102,9 @@ class BoundaryConditions(object):
 
 class Settings(object):
     def __init__(self):
-        self.ps_output = 1  # Output of the Power Supply that feeds the electro cooler
-        self.tc08_channel = 1  # tc to be used to enable/disable electro cooler
+        self.ps_output =   # Output of the Power Supply that feeds the electro cooler
+        self.t_control_tc08_chan = 1  # tc to be used to enable/disable electro cooler
+        self.tc_hot_tc08_chan = 2  # Channel of the TC08 of thermo cooler hot side
+        self.tc_cold_tc08_chan = 3  # Channel of the TC08 of thermo cooler cold side
         self.cold_threshold = 15  # Thermo cooler switches off for lower temperatures
         self.hot_threshold = 16  # Thermo cooler switches on for higher temperatures

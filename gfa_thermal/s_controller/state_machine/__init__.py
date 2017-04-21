@@ -14,7 +14,7 @@ class StateMachine(object):
         self.current_state.initial_run()
 
     def update(self):
-        self.current_state.update(self.bc)
+        self.current_state.update()
 
     def new_state(self, state):
         """

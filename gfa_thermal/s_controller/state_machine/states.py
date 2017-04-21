@@ -14,13 +14,16 @@ class BaseState(metaclass=abc.ABCMeta):
 
     def __init__(self, sm):
         self.sm = sm
+        # self.bc = self.sm.bc
+        # self.func = self.sm.func
+        # self.settings = self.sm.settings
 
     @abc.abstractmethod
     def initial_run(self):
         pass
 
     @abc.abstractmethod
-    def update(self, conditions):
+    def update(self):
         """
         Update contorn conditions for state
         :param sm: State Machine, so it can change state if required by boundary conditions
@@ -45,7 +48,7 @@ class IdleState(BaseState):
     def initial_run(self):
         pass
 
-    def update(self, conditions):
+    def update(self):
         # Idle is a static state, does not change based on boundary conditions, it only changes by request
         pass
 
@@ -80,7 +83,7 @@ class WarmUpState(BaseState):
         # Switch off power supply output
         self.sm.func.disable_power_supply()
 
-    def update(self, conditions):
+    def update(self):
         if self.sm.bc['temperature'] > self.sm.settings['hot_threshold']:
             self.sm.next_state(CoolDownState(self.sm))
 

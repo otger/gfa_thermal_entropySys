@@ -9,6 +9,8 @@ from .actions import StartTempLoop, EnableChannel, StopTempLoop
 # from .web.api.resources import get_api_resources
 # from .web.blueprints import get_blueprint
 from gfa_thermal.system_names import *
+from .callbacks import ThermoCoolerCallback, TemperaturesCallback
+
 from gfa_thermal import config
 """
 module
@@ -48,8 +50,16 @@ class EntropyController(Module):
         :param thermo_cooler_hot: TC08 channel of the thermocouple placed at hot side of thermo cooler
         :return:
         """
+        pass
 
+    def register_electrocooler_calc(self, event_name):
+        self.register_callback(ThermoCoolerCallback, pattern=event_name)
 
+    def register_temperatures_callback(self, event_name, temp_control_channel, hot_threshold, cold_threshold):
+        self.settings.t_control_tc08_chan = temp_control_channel
+        self.settings.cold_threshold = cold_threshold
+        self.settings.hot_threshold = hot_threshold
+        self.register_callback(TemperaturesCallback, pattern=event_name)
 
 class Functionality(object):
     """Functionality for module state machine"""
@@ -90,6 +100,7 @@ class Functionality(object):
                   'voltage': self.p.bc.voltage,
                   'current_limit': self.p.bc.current
                   }
+        self.p.pub_event('status', status)
 
 
 class BoundaryConditions(object):
@@ -102,9 +113,7 @@ class BoundaryConditions(object):
 
 class Settings(object):
     def __init__(self):
-        self.ps_output =   # Output of the Power Supply that feeds the electro cooler
+        self.ps_output = 1  # Output of the Power Supply that feeds the electro cooler
         self.t_control_tc08_chan = 1  # tc to be used to enable/disable electro cooler
-        self.tc_hot_tc08_chan = 2  # Channel of the TC08 of thermo cooler hot side
-        self.tc_cold_tc08_chan = 3  # Channel of the TC08 of thermo cooler cold side
         self.cold_threshold = 15  # Thermo cooler switches off for lower temperatures
         self.hot_threshold = 16  # Thermo cooler switches on for higher temperatures

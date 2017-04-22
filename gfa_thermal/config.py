@@ -20,40 +20,42 @@ TEMPERATURE_CHANNEL_TC_COLD = 3
 CONTROL_COLD_THRESHOLD = 15  # Min temperature (Electro cooler will be switch off under this value)
 CONTROL_HOT_THRESHOLD = 16  # Max temperature (Electro cooler will be switched on above this value)
 
+
+# As laird optotec values are calculated using Kelvin, all sensors must be configured as Kelvin
 TC08_CHAN_0 = {'enable': False,
-               'units': "Centigrade",  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
+               'units': "Kelvin",  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
                'tc_type': "T",  # valid values: 'B', 'E', 'J', 'K', 'N', 'R', 'S', 'T'
                }
 TC08_CHAN_1 = {'enable': True,
-               'units': "Centigrade",  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
+               'units': "Kelvin",  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
                'tc_type': "T",  # valid values: 'B', 'E', 'J', 'K', 'N', 'R', 'S', 'T'
                }
 TC08_CHAN_2 = {'enable': True,
-               'units': "Centigrade",  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
+               'units': "Kelvin",  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
                'tc_type': "T",  # valid values: 'B', 'E', 'J', 'K', 'N', 'R', 'S', 'T'
                }
 TC08_CHAN_3 = {'enable': True,
-               'units': "Centigrade",  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
+               'units': "Kelvin",  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
                'tc_type': "T",  # valid values: 'B', 'E', 'J', 'K', 'N', 'R', 'S', 'T'
                }
 TC08_CHAN_4 = {'enable': False,
-               'units': "Centigrade",  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
+               'units': "Kelvin",  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
                'tc_type': "T",  # valid values: 'B', 'E', 'J', 'K', 'N', 'R', 'S', 'T'
                }
 TC08_CHAN_5 = {'enable': False,
-               'units': "Centigrade",  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
+               'units': "Kelvin",  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
                'tc_type': "T",  # valid values: 'B', 'E', 'J', 'K', 'N', 'R', 'S', 'T'
                }
 TC08_CHAN_6 = {'enable': False,
-               'units': "Centigrade",  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
+               'units': "Kelvin",  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
                'tc_type': "T",  # valid values: 'B', 'E', 'J', 'K', 'N', 'R', 'S', 'T'
                }
 TC08_CHAN_7 = {'enable': False,
-               'units': "Centigrade",  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
+               'units': "Kelvin",  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
                'tc_type': "T",  # valid values: 'B', 'E', 'J', 'K', 'N', 'R', 'S', 'T'
                }
 TC08_CHAN_8 = {'enable': False,
-               'units': "Centigrade",  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
+               'units': "Kelvin",  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
                'tc_type': "T",  # valid values: 'B', 'E', 'J', 'K', 'N', 'R', 'S', 'T'
                }
 

@@ -1,0 +1,2 @@
+recursive-include gfa_thermal/s_controller/web/templates *
+recursive-include gfa_thermal/s_controller/web/bp_static *

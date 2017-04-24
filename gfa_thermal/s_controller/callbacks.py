@@ -31,14 +31,15 @@ class TemperaturesCallback(Callback):
         # look for temperature value
         channel = 'channel_{}'.format(self.module.settings.t_control_tc08_chan)
 
-        chan_value = getattr(self.event.value, channel, None)
+        chan_value = self.event.value.get(channel, None)
         if chan_value is None:
             log.error("Received event temperatures without info of channel {}: {}".format(channel,
                                                                                           self.event.value))
             return
 
         self.module.bc.temperature = chan_value
-        self.module.sm.update()
+        # Every time a temperatures updates i sent, electro cooler calculator will generate a thermo cooler callback, no need to do it twice
+        # self.module.sm.update()
 
 
 class ThermoCoolerCallback(Callback):
@@ -47,8 +48,14 @@ class ThermoCoolerCallback(Callback):
     version = "0.1"
 
     def functionality(self):
-        voltage = getattr(self.event.value, 'voltage')
-        current = getattr(self.event.value, 'current')
+        voltage = self.event.value.get('voltage')
+        current = self.event.value.get('current')
+        try:
+            voltage = float(voltage)
+            current = float(current)
+        except:
+            log.exception("Bad values on thermo cooler callback. Event values: {}".format(self.event.values))
+            raise
         self.module.bc.voltage = voltage
         self.module.bc.current = current
         self.module.sm.update()

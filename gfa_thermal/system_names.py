@@ -4,8 +4,8 @@
 __author__ = 'otger'
 
 
-TC08_MOD = 'tc_08'
-TTiCPX_MOD = 'power_supply'
-LAIRD_MOD = 'thermo_cooler'
+TC08_MOD = 'tc08'
+TTiCPX_MOD = 'TTiCPX'
+LAIRD_MOD = 'electro_cooler'
 CONTROL_MOD = 'controller'
 LOGGER_MOD = 'logger'

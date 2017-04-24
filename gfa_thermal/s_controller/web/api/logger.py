@@ -1,6 +1,6 @@
 import logging
 
-log = logging.getLogger('entropyfw.modules.gfacontroller')
+log = logging.getLogger('entropyfw.modules.gfacontroller.api')
 log.setLevel(logging.DEBUG)
 
 nh = logging.NullHandler()

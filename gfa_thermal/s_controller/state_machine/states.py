@@ -54,7 +54,7 @@ class IdleState(BaseState):
 
     def change_request(self, request):
         if request == StateRequests.CoolDown:
-            self.sm.next_state(CoolDownState(self.sm))
+            self.sm.new_state(CoolDownState(self.sm))
 
 
 class CoolDownState(BaseState):
@@ -65,15 +65,15 @@ class CoolDownState(BaseState):
         self.sm.func.enable_power_supply()
 
     def update(self):
-        if self.sm.bc['temperature'] < self.sm.settings['cold_threshold']:
-            self.sm.next_state(WarmUpState())
+        if self.sm.bc.temperature < self.sm.settings.cold_threshold:
+            self.sm.new_state(WarmUpState(self.sm))
         else:
             self.sm.func.power_supply_update_vi()
 
     def change_request(self, request):
         if request == StateRequests.Idle:
             self.sm.func.disable_power_supply()
-            self.sm.next_state(IdleState(self.sm))
+            self.sm.new_state(IdleState(self.sm))
 
 
 class WarmUpState(BaseState):
@@ -84,11 +84,11 @@ class WarmUpState(BaseState):
         self.sm.func.disable_power_supply()
 
     def update(self):
-        if self.sm.bc['temperature'] > self.sm.settings['hot_threshold']:
-            self.sm.next_state(CoolDownState(self.sm))
+        if self.sm.bc.temperature > self.sm.settings.hot_threshold:
+            self.sm.new_state(CoolDownState(self.sm))
 
     def change_request(self, request):
         if request == StateRequests.Idle:
             self.sm.func.disable_power_supply()
-            self.sm.next_state(IdleState(self.sm))
+            self.sm.new_state(IdleState(self.sm))
 

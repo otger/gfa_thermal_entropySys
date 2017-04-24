@@ -5,9 +5,9 @@ from entropyfw import Module
 from entropyfw.common import get_utc_ts
 from .state_machine import StateMachine, StateRequests
 
-from .actions import StartTempLoop, EnableChannel, StopTempLoop
-# from .web.api.resources import get_api_resources
-# from .web.blueprints import get_blueprint
+# from .actions import StartTempLoop, EnableChannel, StopTempLoop
+from .web.api.resources import get_api_resources
+from .web.blueprints import get_blueprint
 from gfa_thermal.system_names import *
 from .callbacks import ThermoCoolerCallback, TemperaturesCallback
 
@@ -30,6 +30,9 @@ class EntropyController(Module):
         self.bc = BoundaryConditions()
         self.sm = StateMachine(functionality=self.func, settings=self.settings,
                                boundary_conditions=self.bc)
+        self.register_blueprint(get_blueprint(name))
+        for r in get_api_resources():
+            self.register_api_resource(r)
 
     def start_cooling(self):
         self.sm.start_cooling()
@@ -42,7 +45,7 @@ class EntropyController(Module):
         self.settings.hot_threshold = t_hot
         self.sm.update()
 
-    def set_channels(self, control_temp, thermo_cooler_cold, thermo_cooler_hot):
+    def set_channels(self, control_temp, cooler_cold_side, cooler_hot_side):
         """
         This method sets which TC08 channels have to be used for each one of the temperatures
         :param control_temp: TC08 channel of temperature to be used as control
@@ -60,6 +63,7 @@ class EntropyController(Module):
         self.settings.cold_threshold = cold_threshold
         self.settings.hot_threshold = hot_threshold
         self.register_callback(TemperaturesCallback, pattern=event_name)
+
 
 class Functionality(object):
     """Functionality for module state machine"""
@@ -90,17 +94,20 @@ class Functionality(object):
             req.wait_answer(blocking=blocking, timeout=timeout)
             return req.return_value
 
+    def _get_status(self):
+        return {'state': self.p.sm.current_state.name,
+                'ps_output': self.p.settings.ps_output,
+                'control_temperature_channel': self.p.settings.t_control_tc08_chan,
+                'cold_threshold': self.p.settings.cold_threshold,
+                'hot_threshold': self.p.settings.hot_threshold,
+                'temperature': self.p.bc.temperature,
+                'voltage': self.p.bc.voltage,
+                'current_limit': self.p.bc.current
+                }
+    status = property(_get_status)
+
     def publish_status(self):
-        status = {'state': self.p.sm.current_state.name,
-                  'ps_output': self.p.settings.ps_output,
-                  'tc_08_channel': self.p.settings.tc08_channel,
-                  'cold_threshold': self.p.settings.cold_threshold,
-                  'hot_threshold': self.p.settings.hot_threshold,
-                  'temperature': self.p.bc.temperature,
-                  'voltage': self.p.bc.voltage,
-                  'current_limit': self.p.bc.current
-                  }
-        self.p.pub_event('status', status)
+        self.p.pub_event('status', self.status)
 
 
 class BoundaryConditions(object):

@@ -63,10 +63,9 @@ class SetThresholds(ModuleResource):
             self.module.set_thresholds(t_cold=args['cold_threshold'], t_hot=args['hot_threshold'])
         except Exception as ex:
             log.exception('Something went wrong when setting thresholds with arguments: {0}'.format(args))
-
-        return jsonify({'args': args,
-                        'utc_ts': get_utc_ts(),
-                        'result': 'done'})
+            return self.jsonify_return(status=REST_STATUS.Error, result=str(ex), args=args)
+        else:
+            return self.jsonify_return(status=REST_STATUS.Done, result=None, args=args)
 
 
 class Status(ModuleResource):
@@ -74,7 +73,13 @@ class Status(ModuleResource):
     description = "Returns status of controller"
 
     def get(self):
-        return jsonify(self.module.func.status)
+        try:
+            var_status = self.module.func.status
+        except Exception as ex:
+            log.exception('Something went wrong when asking for status')
+            return self.jsonify_return(status=REST_STATUS.Error, result=str(ex))
+        else:
+            return self.jsonify_return(status=REST_STATUS.Done, result=var_status)
 
 
 def get_api_resources():

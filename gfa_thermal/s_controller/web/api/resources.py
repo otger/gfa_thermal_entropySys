@@ -1,12 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from entropyfw.api.rest import ModuleResource
+from entropyfw.api.rest import ModuleResource, REST_STATUS
 from flask import jsonify
 from flask_restful import reqparse
 from entropyfw.common import get_utc_ts
-from PicoController.common.definitions import THERMOCOUPLES, UNITS
 from .logger import log
-from s_pico_tc08 import T_UNITS, TC_TYPES
 """
 resources
 Created by otger on 29/03/17.
@@ -22,10 +20,13 @@ class StartCooling(ModuleResource):
         super(StartCooling, self).__init__(module)
 
     def post(self):
-        self.module.start_cooling()
-
-        return jsonify({'utc_ts': get_utc_ts(),
-                        'result': 'done'})
+        try:
+            self.module.start_cooling()
+        except Exception as ex:
+            log.exception('Something went wrong when launched cool down state')
+            return self.jsonify_return(status=REST_STATUS.Error, result=str(ex))
+        else:
+            return self.jsonify_return(status=REST_STATUS.Done, result=None)
 
 
 class StopCooling(ModuleResource):
@@ -36,10 +37,13 @@ class StopCooling(ModuleResource):
         super(StopCooling, self).__init__(module)
 
     def post(self):
-        self.module.stop_cooling()
-
-        return jsonify({'utc_ts': get_utc_ts(),
-                        'result': 'done'})
+        try:
+            self.module.stop_cooling()
+        except Exception as ex:
+            log.exception('Something went wrong when requested to go to idle state')
+            return self.jsonify_return(status=REST_STATUS.Error, result=str(ex))
+        else:
+            return self.jsonify_return(status=REST_STATUS.Done, result=None)
 
 
 class SetThresholds(ModuleResource):
@@ -59,10 +63,9 @@ class SetThresholds(ModuleResource):
             self.module.set_thresholds(t_cold=args['cold_threshold'], t_hot=args['hot_threshold'])
         except Exception as ex:
             log.exception('Something went wrong when setting thresholds with arguments: {0}'.format(args))
-
-        return jsonify({'args': args,
-                        'utc_ts': get_utc_ts(),
-                        'result': 'done'})
+            return self.jsonify_return(status=REST_STATUS.Error, result=str(ex), args=args)
+        else:
+            return self.jsonify_return(status=REST_STATUS.Done, result=None, args=args)
 
 
 class Status(ModuleResource):
@@ -70,7 +73,13 @@ class Status(ModuleResource):
     description = "Returns status of controller"
 
     def get(self):
-        return jsonify(self.module.func.status)
+        try:
+            var_status = self.module.func.status
+        except Exception as ex:
+            log.exception('Something went wrong when asking for status')
+            return self.jsonify_return(status=REST_STATUS.Error, result=str(ex))
+        else:
+            return self.jsonify_return(status=REST_STATUS.Done, result=var_status)
 
 
 def get_api_resources():

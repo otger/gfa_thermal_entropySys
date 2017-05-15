@@ -6,7 +6,7 @@ from PicoController.common.definitions import THERMOCOUPLES, UNITS
 
 __author__ = 'otger'
 
-SENSORS_LOOP_INTERVAL = 5
+SENSORS_LOOP_INTERVAL = 1
 
 TTiCPX_IP = '172.16.17.55'
 TTiCPX_PORT = 9221
@@ -15,11 +15,11 @@ TTiCPX_OUTPUT = 1
 LAIRD_QC_DESIRED = 1
 
 TEMPERATURE_CHANNEL_CONTROL = 1
-TEMPERATURE_CHANNEL_TC_HOT = 2
-TEMPERATURE_CHANNEL_TC_COLD = 3
+TEMPERATURE_CHANNEL_TC_HOT = 3
+TEMPERATURE_CHANNEL_TC_COLD = 2
 
-CONTROL_COLD_THRESHOLD = 23+273.15  # Min temperature (Electro cooler will be switch off under this value)
-CONTROL_HOT_THRESHOLD = 25+273.15  # Max temperature (Electro cooler will be switched on above this value)
+CONTROL_COLD_THRESHOLD = 15+273.15  # Min temperature (Electro cooler will be switch off under this value)
+CONTROL_HOT_THRESHOLD = 16+273.15  # Max temperature (Electro cooler will be switched on above this value)
 
 
 # As laird optotec values are calculated using Kelvin, all sensors must be configured as Kelvin
@@ -39,7 +39,7 @@ TC08_CHAN_3 = {'enable': True,
                'units': UNITS.TEMPERATURE.KELVIN,  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
                'tc_type': THERMOCOUPLES.T,  # valid values: 'B', 'E', 'J', 'K', 'N', 'R', 'S', 'T'
                }
-TC08_CHAN_4 = {'enable': False,
+TC08_CHAN_4 = {'enable': True,
                'units': UNITS.TEMPERATURE.KELVIN,  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
                'tc_type': THERMOCOUPLES.T,  # valid values: 'B', 'E', 'J', 'K', 'N', 'R', 'S', 'T'
                }

@@ -37,9 +37,10 @@
                 success:function(result){
                     console.log(result);
                     var container = $("#show_status");
+                    var values = result['result'];
                     container.empty();
-                    for (var key in result) {
-                        container.append(getCard(key, result[key]));
+                    for (var key in values) {
+                        container.append(getCard(key, values[key]));
                     };
 
                 }});

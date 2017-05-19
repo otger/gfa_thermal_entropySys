@@ -87,6 +87,9 @@ if __name__ == "__main__":
     # Configure logger values to save
     s.elogger.add_log('{}.{}'.format(system_names.TC08_MOD, 'temperatures'))
     s.elogger.add_log('{}.{}'.format(system_names.LAIRD_MOD, 'status'))
+    s.elogger.add_log('{}.{}'.format(system_names.LAIRD_MOD, 'constant_qc_vi'))
+    s.elogger.add_log('{}.{}'.format(system_names.TTiCPX_MOD, 'status.1'))
+    s.elogger.add_log('{}.{}'.format(system_names.TTiCPX_MOD, 'status.2'))
 
     # start loop on tc08 and tticpx every x seconds set at config
     s.tticpx.start_timer(config.SENSORS_LOOP_INTERVAL)

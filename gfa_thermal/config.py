@@ -43,7 +43,7 @@ TC08_CHAN_4 = {'enable': True,
                'units': UNITS.TEMPERATURE.KELVIN,  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
                'tc_type': THERMOCOUPLES.T,  # valid values: 'B', 'E', 'J', 'K', 'N', 'R', 'S', 'T'
                }
-TC08_CHAN_5 = {'enable': False,
+TC08_CHAN_5 = {'enable': True,
                'units': UNITS.TEMPERATURE.KELVIN,  # valid values: 'Centigrade', 'Fahrenheit', 'Kelvin', 'Rankine'
                'tc_type': THERMOCOUPLES.T,  # valid values: 'B', 'E', 'J', 'K', 'N', 'R', 'S', 'T'
                }

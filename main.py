@@ -1,9 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-
 __author__ = 'otger'
-if __name__ == "__main__":
+
+
+def gfa_thermal_main():
     from gfa_thermal import config, system_names
     from gfa_thermal.system import SystemGFAThermal
     from entropyfw.logger import log
@@ -26,7 +27,6 @@ if __name__ == "__main__":
     @app.errorhandler(404)
     def handle_bad_request(e):
         log.exception('Whatever exception')
-
 
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
@@ -102,3 +102,6 @@ if __name__ == "__main__":
         s.pico.stop_timer()
         print(s.list_callbacks())
         s.exit()
+
+if __name__ == "__main__":
+    gfa_thermal_main()

@@ -36,6 +36,11 @@ setup(
       long_description=LONG_DESCRIPTION,
       zip_safe=False,
       use_2to3=True,
+      entry_points={
+              'console_scripts': [
+                  'gfathermal = main:gfa_thermal_main',
+              ],
+          },
       classifiers=[
                    "Development Status :: 4 - Beta",
                    "Programming Language :: Python",

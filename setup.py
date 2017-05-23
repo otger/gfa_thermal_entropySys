@@ -38,7 +38,7 @@ setup(
       use_2to3=True,
       entry_points={
               'console_scripts': [
-                  'gfathermal = main:gfa_thermal_main',
+                  'gfathermal = gfa_thermal.main:gfa_thermal_main',
               ],
           },
       classifiers=[

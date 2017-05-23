@@ -26,7 +26,7 @@ class SystemGFAThermal(System):
         self.add_module(self.ot15)
         self.controller = GFAEntropyController(name=system_names.CONTROL_MOD)
         self.add_module(self.controller)
-        self.elogger = EntropyEventLogger(name=system_names.LOGGER_MOD)
+        self.elogger = EntropyEventLogger(name=system_names.LOGGER_MOD, backup_path='/tmp')
         self.add_module(self.elogger)
 
     def connect_power_supply(self, ip, port=9221):

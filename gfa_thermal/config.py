@@ -17,6 +17,7 @@ LAIRD_QC_DESIRED = 2
 TEMPERATURE_CHANNEL_CONTROL = 5
 TEMPERATURE_CHANNEL_TC_HOT = 4
 TEMPERATURE_CHANNEL_TC_COLD = 2
+TEMPERATURE_CHANNEL_ROOM = 6
 
 CONTROL_COLD_THRESHOLD = 15+273.15  # Min temperature (Electro cooler will be switch off under this value)
 CONTROL_HOT_THRESHOLD = 16+273.15  # Max temperature (Electro cooler will be switched on above this value)

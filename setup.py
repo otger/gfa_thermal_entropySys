@@ -39,6 +39,7 @@ setup(
       entry_points={
               'console_scripts': [
                   'gfathermal = gfa_thermal.main:gfa_thermal_main',
+                  'gfamonitor = gfa_thermal.mainmonitor:gfa_thermal_monitor'
               ],
           },
       classifiers=[

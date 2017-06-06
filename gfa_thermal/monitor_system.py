@@ -1,0 +1,30 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+from entropyfw import System
+
+from s_pico_tc08.module import EntropyPicoTc08
+from s_tti_cpx.module import EntropyTTiCPX
+from s_laird_optotec_ot15.module import EntropyLairdOT15ConstantQc
+from .s_controller.module import EntropyController as GFAEntropyController
+from s_eventlogger.module import EntropyEventLogger
+from . import config
+
+from . import system_names
+
+__author__ = 'otger'
+
+
+class SystemMonitorGFAThermal(System):
+
+    def __init__(self, flask_app):
+        System.__init__(self, flask_app)
+        self.pico = EntropyPicoTc08(name=system_names.TC08_MOD, channels=[])
+        self.add_module(self.pico)
+        # self.tticpx = EntropyTTiCPX(name=system_names.TTiCPX_MOD)
+        # self.add_module(self.tticpx)
+        self.elogger = EntropyEventLogger(name=system_names.LOGGER_MOD, backup_path='/tmp')
+        self.add_module(self.elogger)
+
+    def enable_tc08_channel(self, channel, tc_type, units):
+        self.pico.enable(channel=channel, tc_type=tc_type, units=units)
+

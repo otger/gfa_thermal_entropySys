@@ -52,7 +52,7 @@ def gfa_thermal_monitor():
     print(app.url_map)
 
     # Enable channel
-    chan = getattr(config, 'TEMPERATURE_CHANNEL_ROOM')
+    chan = config.TEMPERATURE_CHANNEL_AMBIENT
     conf_val = getattr(config, 'TC08_CHAN_{}'.format(chan))
     if conf_val['enable']:
         log.info('Enabling Channel {}'.format(chan))

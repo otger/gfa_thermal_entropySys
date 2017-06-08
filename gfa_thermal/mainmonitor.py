@@ -52,11 +52,17 @@ def gfa_thermal_monitor():
     print(app.url_map)
 
     # Enable channel
-    chan = config.TEMPERATURE_CHANNEL_AMBIENT
-    conf_val = getattr(config, 'TC08_CHAN_{}'.format(chan))
-    if conf_val['enable']:
-        log.info('Enabling Channel {}'.format(chan))
-        s.enable_tc08_channel(chan, tc_type=conf_val['tc_type'], units=conf_val['units'])
+    for chan in range(9):
+        conf_val = getattr(config, 'TC08_CHAN_{}'.format(chan))
+        if conf_val['enable']:
+            log.info('Enabling Channel {}'.format(chan))
+            s.enable_tc08_channel(chan, tc_type=conf_val['tc_type'], units=conf_val['units'])
+    #
+    # chan = config.TEMPERATURE_CHANNEL_AMBIENT
+    # conf_val = getattr(config, 'TC08_CHAN_{}'.format(chan))
+    # if conf_val['enable']:
+    #     log.info('Enabling Channel {}'.format(chan))
+    #     s.enable_tc08_channel(chan, tc_type=conf_val['tc_type'], units=conf_val['units'])
 
     # Configure logger values to save
     s.elogger.add_log('{}.{}'.format(system_names.TC08_MOD, 'temperatures'))
